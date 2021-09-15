@@ -74,4 +74,8 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Cv::class , 'cv_users');
     }
+    public function defaultProfilePhotoUrl()
+    {
+        return 'https://ui-avatars.com/api/?name='.urlencode($this->name).'&color=7F9CF5&background=EBF4FF';
+    }
 }

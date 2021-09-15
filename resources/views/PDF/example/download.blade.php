@@ -135,8 +135,8 @@
                         <tr>
                             <td class="avatar-wraper" id="avatar" rowspan="9">
                                 <img id="cvo-profile-avatar"
-                                    src="{{'data:image/png;base64,'. $data }}"
-                                    value="{{ Auth::user()->profile_photo_url  }}" alt="avatar">
+                                    src="{{ !is_null($user->profile_photo_path) ? 'data:image/png;base64,'. $avatar : 'https://ui-avatars.com/api/?name=Nguy%E1%BB%85n+Quang+B%E1%BA%A3o&color=7F9CF5&background=EBF4FF' }}"
+                                    value="" alt="avatar">
                             </td>
                             <td>
                                 <span id="cvo-profile-fullname">{{ $user->name }}</span>

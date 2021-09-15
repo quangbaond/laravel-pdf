@@ -94,11 +94,15 @@ class PDFController extends Controller
         if(is_null($cv)){
             abort(404);
         }   
-        $user = User::find(auth()->user()->id); 
-        $data = storage_path('app/public/'.Auth::user()->profile_photo_path);
-        $data = base64_encode(file_get_contents($data));
-        $pdf = $pdfCreator->loadView('PDF.example.download', compact('user' , 'cv' , 'data'));
-        $pdf->setOptions(['isRemoteEnabled' => true]);  
+        $user = User::find(auth()->user()->id);
+        $avatar = $user->defaultProfilePhotoUrl();
+        if(!is_null(Auth::user()->profile_photo_path)){ 
+            $data = storage_path('app/public/'.Auth::user()->profile_photo_path);
+            $avatar = base64_encode(file_get_contents($data));
+        }
+        
+        $pdf = $pdfCreator->loadView('PDF.example.download', compact('user' , 'cv' , 'avatar'));
+        $pdf->setOptions(['isRemoteEnabled' => true]);
         return $pdf->stream($user->name.'.pdf');
     }
     /*
