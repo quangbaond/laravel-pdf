@@ -17,9 +17,9 @@ class CreateCvUsersTable extends Migration
             $table->id();
             $table->foreignId('cv_id');
             $table->foreignId('user_id');
-            $table->string('title');
-            $table->string('slug');
-            $table->string('position');
+            $table->string('title')->nullable();
+            $table->string('slug')->nullable();
+            $table->string('position')->nullable();
             $table->longText('target')->nullable();
             $table->json('education')->nullable();
             $table->json('experience')->nullable();

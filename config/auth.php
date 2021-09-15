@@ -85,6 +85,7 @@ return [
     | they have less time to be guessed. You may change this as needed.
     |
     */
+    
 
     'passwords' => [
         'users' => [

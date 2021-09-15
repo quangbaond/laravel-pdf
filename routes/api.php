@@ -17,4 +17,14 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-Route::post('/save/{id}' , [\App\Http\Controllers\PDFController::class , 'update'])->name('api.update');
+Route::middleware(['web' , 'auth:'.config('fortify.guard')])->group(function() {
+
+    Route::post('/save/{id}' , [\App\Http\Controllers\PDFController::class , 'update'])->name('api.update');
+});
+
+
+
+
+
+
+

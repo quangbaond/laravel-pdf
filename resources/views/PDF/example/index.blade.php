@@ -7,12 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
     <link rel="stylesheet" href="{{ asset('css/PDF/example.css') }}">
-    <style>
-        .textarea, textarea {
-            display: block;
-            width: 100%;
-        }
-    </style>
+   
 </head>
 
 <body>
@@ -32,43 +27,35 @@
                                             <tr>
                                                 <td class="avatar-wraper" rowspan="9">
                                                     <img id="cvo-profile-avatar"
-                                                        src="{{ $user->avatar ? asset($user->avatar) : asset('user.png') }}"
+                                                        src="{{ Auth::user()->profile_photo_url ?? asset('user.png') }}"
                                                         alt="avatar">
                                                 </td>
                                                 <td>
-                                                    <span id="cvo-profile-fullname">
-                                                        {{ $user->name }}
-                                                    </span>
+                                                    <span id="cvo-profile-fullname">{{ $user->name }}</span>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td>
-                                                    <span id="cvo-profile-title">
-                                                        {{ $cv->position }}
-                                                    </span>
+                                                    <span id="cvo-profile-title">{{ $cv->position ?? 'Thực tập sinh'}} </span>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td>
                                                     <span class="profile-label">Ngày sinh: </span>
-                                                    <span class="profile-field" id="cvo-profile-dob">
-                                                        {{ \Carbon\Carbon::parse($user->information->birthday)->format('m-d-Y') }}
-                                                    </span>
+                                                    <span class="profile-field" id="cvo-profile-dob">{{ !is_null($user->information->birthday) ?  \Carbon\Carbon::parse($user->information->birthday)->format('m/d/Y') : \Carbon\Carbon::now()->format('m/d-Y') }}</span>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td>
                                                     <span class="profile-label">Giới tính: </span>
-                                                    <span class="profile-field" id="cvo-profile-gender">
-                                                        {{ $user->information->gender == 1 ? "Nam" : "Nữ" }}
-                                                    </span>
+                                                    <span class="profile-field" id="cvo-profile-gender">{{ $user->information->gender == 1 ? "Nam" : "Nữ" }}</span>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td>
                                                     <span class="profile-label">Điện thoại: </span>
                                                     <span class="profile-field"
-                                                        id="cvo-profile-phone">{{ $user->information->phone }}</span>
+                                                        id="cvo-profile-phone">{{ $user->information->phone ?? '039'}}</span>
                                                 </td>
                                             </tr>
                                             <tr>
@@ -119,12 +106,8 @@
                                                 </span>
                                             </div>
                                             <div class="school">
-                                                <span class="cvo-education-school">
-                                                    {{ $education['education_title'] }}
-                                                </span>
-                                                <span class="cvo-education-title">
-                                                    {{ $education['education_content'] }}
-                                                </span>
+                                                <span class="cvo-education-school">{{ $education['education_title'] }}</span>
+                                                <span class="cvo-education-title">{{ $education['education_content'] }}</span>
                                             </div>
                                             <div style="clear: both"></div>
                                         </div>
@@ -207,18 +190,14 @@
                                 <div id="cvo-interests" class="cvo-block">
                                     <h3 class="cvo-block-title"><span id="cvo-interests-blocktitle">Sở thích</span></h3>
                                     <div class="cvo-block-body">
-                                        <span id="cvo-interests-interests">
-                                            {{ $cv->interests }}
-                                        </span>
+                                        <span id="cvo-interests-interests">{{ $cv->interests ?? 'Nhảy dây' }}</span>
                                     </div>
                                 </div>
-                                <div id="cvo-additional-info" class="cvo-block">
+                                {{-- <div id="cvo-additional-info" class="cvo-block">
                                     <div class="cvo-block-title"><span id="cvo-additional-info-blocktitle">Thông tin
                                             thêm</span></div>
-                                    <div id="cvo-additional-information-details">
-                                        {{ $cv->description }}
-                                    </div>
-                                </div>
+                                    <div id="cvo-additional-information-details">{{ $cv->description ?? 'Thông tin thêm' }}</div>
+                                </div> --}}
                             </div>
 
                         </div>
@@ -228,76 +207,16 @@
             </div>
         </div>
     </div>
+    <a style="position : fixed; top :50%; right: 10px; display:block; width : 50px; height : 50px; border-radius:50%; background-color: yellow; text-align:center;" href="{{ route('pdf.download' , $cv->slug) }}">
+    💟</a>
     <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
     <script src="{{ asset('jquery.jeditable.min.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.js"></script>
     <script>
-        $("#cvo-profile-title").editable('{{ route('api.update' , $cv->id) }}' , {
-            id   : 'position',
-            name : 'value',
-            onblur: "submit",
-            placeholder: "&nbsp;",
-            tooltip: "Click to edit"
-        });
-
-        
-    
-        $("#cvo-profile-dob").editable('{{ route('api.update' , $cv->id) }}' , {
-            id   : 'birthday',
-            name : 'value',
-            onblur: "submit",
-            placeholder: "&nbsp;",
-            tooltip: "Click to edit"
-        });
-        $("#cvo-profile-phone").editable('{{ route('api.update' , $cv->id) }}' , {
-            id   : 'phone',
-            name : 'value',
-            onblur: "submit",
-            placeholder: "&nbsp;",
-            tooltip: "Click to edit"
-        });
-        $("#cvo-profile-email").editable('{{ route('api.update' , $cv->id) }}' , {
-            id   : 'email',
-            name : 'value',
-            onblur: "submit",
-            placeholder: "&nbsp;",
-            tooltip: "Click to edit"
-        });
-        $("#cvo-profile-website").editable('{{ route('api.update' , $cv->id) }}' , {
-            id   : 'website',
-            name : 'value',
-            onblur: "submit",
-            placeholder: "&nbsp;",
-            tooltip: "Click to edit"
-        });
-        $("#cvo-profile-address").editable('{{ route('api.update' , $cv->id) }}' , {
-            id   : 'address',
-            name : 'value',
-            onblur: "submit",
-            placeholder: "&nbsp;",
-            tooltip: "Click to edit"
-        });
-        $("#cvo-objective-objective").editable('{{ route('api.update' , $cv->id) }}' , {
-            id   : 'target',
-            name : 'value',
-            // onblur: "submit",
-            placeholder: "&nbsp;",
-            tooltip: "Click to edit",
-            type      : 'textarea',
-            cssclass  : 'textarea',
-        });
-        $("#cvo-interests-interests").editable('{{ route('api.update' , $cv->id) }}' , {
-            id   : 'interests',
-            name : 'value',
-            onblur: "submit",
-            placeholder: "&nbsp;",
-            tooltip: "Click to edit"
-        });
-        
-        
-        
-        
+        const url = "{{ route('api.update' , $cv->id) }}"
+        const token = "{{ csrf_token() }}"
     </script>
+    <script src="{{ asset('editor.js') }}"></script>
 </body>
 
 </html>

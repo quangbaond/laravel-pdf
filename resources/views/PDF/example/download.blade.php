@@ -135,8 +135,8 @@
                         <tr>
                             <td class="avatar-wraper" id="avatar" rowspan="9">
                                 <img id="cvo-profile-avatar"
-                                    src="https://static.topcv.vn/avatars/GElY69hYAC1FhPHF9euj_608a2ffb129a3_cvtpl.jpg?1631621845"
-                                    value="GElY69hYAC1FhPHF9euj_608a2ffb129a3_cvtpl.jpg" alt="avatar">
+                                    src="{{'data:image/png;base64,'. $data }}"
+                                    value="{{ Auth::user()->profile_photo_url  }}" alt="avatar">
                             </td>
                             <td>
                                 <span id="cvo-profile-fullname">{{ $user->name }}</span>
@@ -197,51 +197,6 @@
                     </tbody>
                 </table>
             </div>
-            {{-- <div class="row">
-                <div class="col-sm-3">
-                    <div id="avatar">
-                        <img src="{{ 'https://static.topcv.vn/avatars/GElY69hYAC1FhPHF9euj_608a2ffb129a3_cvtpl.jpg?1631621845' }}"
-                            class="img-fluid" alt="">
-                    </div>
-
-                </div>
-                <div class="col">
-                    <div id="information">
-                        <h3>{{ $user->name }}</h3>
-                        <h5>{{ $cv->position }}</h5>
-                        <div class="d-flex">
-                            <p class="profile-title">Ngày Sinh:</p>
-                            <p class="profile-content">{{ $user->information->birthday ?? '17/09/2001' }}</p>
-                        </div>
-                        <div class="d-flex">
-                            <p class="profile-title">Giới tính:</p>
-                            <p class="profile-content">{{ $user->information->gender == 1 ? 'Nam' : 'Nữ' }}</p>
-                        </div>
-                        <div class="d-flex">
-                            <p class="profile-title">Điện thoại:</p>
-                            <p class="profile-content">{{ $user->information->phone ?? '0389228496' }}</p>
-                        </div>
-                        <div class="d-flex">
-                            <p class="profile-title">Email:</p>
-                            <p class="profile-content">{{ $user->email ?? 'quangbaorp@gmail.com' }}</p>
-                        </div>
-                        <div class="d-flex">
-                            <p class="profile-title">Địa chỉ:</p>
-                            <p class="profile-content">{{ $user->information->address ?? 'Nam Định' }}</p>
-                        </div>
-                        <div class="d-flex">
-                            <p class="profile-title">Website:</p>
-                            <p class="profile-content">
-                                @if (!is_null($user->information->website))
-                                    <a href="{{ $user->information->website }}"></a>
-                                @else
-                                    <a href="https://fb.com/quangbaond">facebook</a>
-                                @endif
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div> --}}
         </div>
         <div id="wrap_content">
             <div class="my-2" id="target">
@@ -301,32 +256,29 @@
 
 
             </div>
-            <div class="my-2" id="experience">
-                <h3 class="title">Học vấn</h3>
-                <div class="">
-                    @foreach (json_decode($cv->experience, true) as $education)
+            <div class="my-2 " id="experience">
+                <h3 class="title">Các kĩ năng</h3>
+
+                @foreach (json_decode($cv->skill, true) as $skill)
                     <div class="row border-bottom content">
                         <div class="col-sm-3">
                             <p>
-                                <span>
-                                    {{ \Carbon\Carbon::parse($education['start_date'])->format('d/m/Y') }}
-                                </span>
-                                -
-                                {{ \Carbon\Carbon::parse($education['end_date'])->format('d/m/Y') }}
+                                <b >
+                                    {{ $skill['name'] }}
+                                </b>
+                                
                             </p>
                         </div>
                         <div class="col">
-                            <p><b>{{ $education['experience_title'] }}</b></p>
-                            <p>{{ $education['experience_title'] }}</p>
-                            <div class="experience-detail">
-                                abc
-                            </div>
+                            
+                            <p>{{ $skill['content'] }}</p>
+                            
                         </div>
                     </div>
-                    @endforeach
-                    
-                </div>
-            </div> 
+                @endforeach
+
+
+            </div>
             <div class="my-2" id="interests">
                 <h3 class="title">Sở thích</h3>
                 <div class="content">

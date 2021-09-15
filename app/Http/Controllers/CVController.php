@@ -14,7 +14,8 @@ class CVController extends Controller
      */
     public function index()
     {
-        //
+        $cvs = CV::all();
+        return view('cv.index' , compact('cvs'));
     }
 
     /**

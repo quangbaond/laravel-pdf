@@ -17,8 +17,8 @@ class CreateInformationTable extends Migration
             $table->id();
             $table->foreignId('user_id')->onDelete('cascade');
             $table->string('avatar')->nullable();
-            $table->string('address');
-            $table->integer('gender');
+            $table->string('address')->nullable();
+            $table->integer('gender')->nullable();
             $table->string('phone')->nullable();
             $table->date('birthday')->nullable();
             $table->string('website')->nullable();

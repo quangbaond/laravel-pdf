@@ -16,14 +16,17 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('/pdf/slug' , [\App\Http\Controllers\PDFController::class , 'index']);
 Route::get('/test' , [\App\Http\Controllers\PDFController::class , 'test']);
+Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
+    return view('dashboard');
+})->name('dashboard');
+Route::middleware(['auth:'.config('fortify.guard')])->group(function() {
+    Route::get('/pdf/{slug}' , [\App\Http\Controllers\PDFController::class , 'index'])->name('pdf.index');
+    Route::get('/pdf/download/{slug}' , [\App\Http\Controllers\PDFController::class , 'download'])->name('pdf.download');
+    Route::post('/save/{id}' , [\App\Http\Controllers\PDFController::class , 'update'])->name('api.update');
+    Route::get('/cvs' , [\App\Http\Controllers\CVController::class , 'index'])->name('cvs.index');
+    Route::get('/url', function (){ return storage_path(\Auth::user()->profile_photo_path); })->name('storage.url');
 
 
-Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::post('/reset-password', [App\Http\Controllers\ResetPasswordController::class,'sendMail']);
-Route::get('/forget-password', [App\Http\Controllers\ResetPasswordController::class,'index']);
-
-Route::put('/reset-password/{token}',  [App\Http\Controllers\ResetPasswordController::class,'reset']);
+});
+// Route::post('/post/login', [\App\Http\Controllers\LoginController::class , 'login'])->name('post.login');
